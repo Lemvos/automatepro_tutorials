@@ -19,8 +19,8 @@ find_package(automatepro_interfaces REQUIRED)
 include_directories(include)
 
 # Add executables and link dependencies
-add_executable(io_controller_node src/diagnostics/io_controller.cpp)
-ament_target_dependencies(io_controller_node rclcpp  std_msgs  automatepro_interfaces)
+add_executable(io_controller_diagnostic_node src/diagnostics/io_controller.cpp)
+ament_target_dependencies(io_controller_diagnostic_node rclcpp  std_msgs  automatepro_interfaces)
 
 add_executable(analog_in_node src/io/analog_in.cpp)
 ament_target_dependencies(analog_in_node rclcpp  std_msgs  automatepro_interfaces)
@@ -34,8 +34,8 @@ ament_target_dependencies(digital_in_node rclcpp std_srvs std_msgs  automatepro_
 add_executable(digital_out_node src/io/digital_out.cpp)
 ament_target_dependencies(digital_out_node rclcpp  std_msgs  automatepro_interfaces)
 
-add_executable(warning_systems_node src/io/warning_systems.cpp)
-ament_target_dependencies(warning_systems_node rclcpp  std_msgs  automatepro_interfaces)
+add_executable(warning_system_out_node src/io/warning_system_out.cpp)
+ament_target_dependencies(warning_system_out_node rclcpp  std_msgs  automatepro_interfaces)
 
 add_executable(gnss_heading_node src/sensors/gnss_heading.cpp)
 ament_target_dependencies(gnss_heading_node rclcpp std_msgs sensor_msgs geometry_msgs ublox_msgs automatepro_interfaces)
@@ -47,12 +47,12 @@ add_executable(imu_node src/sensors/imu.cpp)
 ament_target_dependencies(imu_node rclcpp std_msgs sensor_msgs geometry_msgs )
 
 install(TARGETS
-  io_controller_node
+  io_controller_diagnostic_node
   analog_in_node
   digital_drive_out_node
   digital_in_node
   digital_out_node
-  warning_systems_node
+  warning_system_out_node
   gnss_heading_node
   gnss_position_node
   imu_node

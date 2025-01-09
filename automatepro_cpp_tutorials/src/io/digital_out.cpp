@@ -20,7 +20,7 @@ private:
     void timer_callback()
     {
         auto msg = automatepro_interfaces::msg::DigitalOut();
-        msg.d_out_pin_id = automatepro_interfaces::msg::DigitalOut::DIGITAL_OUT_01; // Digital Out Pin 01
+        msg.d_out_pin_id = automatepro_interfaces::msg::DigitalOut::DIGITAL_OUT_H_01; // Digital Out Pin 01
         msg.duty_cycle_percent = duty_cycle_sequence_[sequence_index_]; // Duty Cycle: 0%, 50%, 100%, 50%
                                                                         // 0% - OFF, 100% - ON
         publisher_->publish(msg);

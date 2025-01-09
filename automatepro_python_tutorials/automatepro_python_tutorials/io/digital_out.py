@@ -13,7 +13,7 @@ class DigitalOutPublisher(Node):
 
     def timer_callback(self):
         msg = DigitalOut()
-        msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_01 # Digital Out Pin 01
+        msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_H_01 # Digital Out Pin 01
         msg.duty_cycle_percent = self.duty_cycle_sequence[self.sequence_index] # Duty Cycle:  0%, 50%, 100%, 50%
                                                                                # 0% - OFF, 100% - ON 
         self.publisher_.publish(msg)

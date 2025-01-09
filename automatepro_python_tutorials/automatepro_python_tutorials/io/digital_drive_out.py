@@ -14,11 +14,11 @@ class DigitalDriveOutPublisher(Node):
         msg = DigitalDriveOut()
         msg.d_drive_pin_id = DigitalDriveOut.HALF_BRIDGE_DRIVE_01
         msg.direction = DigitalDriveOut.FORWARD
-        msg.percent_duty_cycle = self.duty_cycle
+        msg.duty_cycle_percent = self.duty_cycle
         self.publisher_.publish(msg)
         self.get_logger().info(
             'Publishing DigitalDriveOut: d_out_pin_id=%d, direction=%d, duty_cycle_percent=%d' %
-            (msg.d_drive_pin_id, msg.direction, msg.percent_duty_cycle))
+            (msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent))
         self.duty_cycle = 100 if self.duty_cycle == 0 else 0 # Toggle duty cycle between 0(ON) and 100(OFF)
 
 def main(args=None):

@@ -7,7 +7,7 @@ public:
     WarningSystemsPublisher()
         : Node("warning_systems_publisher"), state_(false)
     {
-        publisher_ = this->create_publisher<automatepro_interfaces::msg::WarningSystems>("/io/warning_systems", 10);
+        publisher_ = this->create_publisher<automatepro_interfaces::msg::WarningSystems>("/io/warning_system_out", 10);
         timer_ = this->create_wall_timer(
             std::chrono::seconds(1),
             std::bind(&WarningSystemsPublisher::timer_callback, this));

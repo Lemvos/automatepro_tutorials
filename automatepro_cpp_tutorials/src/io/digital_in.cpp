@@ -1,6 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <automatepro_interfaces/msg/digital_in.hpp>
-#include <std_srvs/srv/trigger.hpp>
+#include <automatepro_interfaces/srv/req_digital_in.hpp>
 
 class DigitalInSubscriber : public rclcpp::Node
 {
@@ -12,7 +12,7 @@ public:
             "/io/din", 10,
             std::bind(&DigitalInSubscriber::listener_callback, this, std::placeholders::_1));
 
-        client_ = this->create_client<std_srvs::srv::Trigger>("/io/din/request");
+        client_ = this->create_client<automatepro_interfaces::srv::ReqDigitalIn>("/io/din/request");
         request_state(); // Request the current state of the digital inputs
     }
 
@@ -36,20 +36,22 @@ private:
             RCLCPP_INFO(this->get_logger(), "service not available, waiting again...");
         }
 
-        auto request = std::make_shared<std_srvs::srv::Trigger::Request>();
-        auto result = client_->async_send_request(request);
-        result.wait();
-        if (result.valid()) {
-            auto response = result.get();
-            RCLCPP_INFO(this->get_logger(), "Service response: %s", response->message.c_str());
-        }
-        else {
-            RCLCPP_ERROR(this->get_logger(), "Service call failed");
-        }
+        auto request = std::make_shared<automatepro_interfaces::srv::ReqDigitalIn::Request>();
+        using ServiceResponseFuture = rclcpp::Client<automatepro_interfaces::srv::ReqDigitalIn>::SharedFuture;
+        auto response_received_callback = [this](ServiceResponseFuture future) {
+            auto response = future.get();
+            if (response->success) {
+                RCLCPP_INFO(this->get_logger(), "Service response received: success= %d", response->success);
+            } else {
+                RCLCPP_ERROR(this->get_logger(), "Service call failed");
+            }
+        };
+
+        auto result = client_->async_send_request(request, response_received_callback);
     }
 
     rclcpp::Subscription<automatepro_interfaces::msg::DigitalIn>::SharedPtr subscription_;
-    rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr client_;
+    rclcpp::Client<automatepro_interfaces::srv::ReqDigitalIn>::SharedPtr client_;
 };
 
 int main(int argc, char *argv[])

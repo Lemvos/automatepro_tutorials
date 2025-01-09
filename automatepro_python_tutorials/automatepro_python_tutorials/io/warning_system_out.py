@@ -6,7 +6,7 @@ class WarningSystemsPublisher(Node):
 
     def __init__(self):
         super().__init__('warning_systems_publisher')
-        self.publisher_ = self.create_publisher(WarningSystems, '/io/warning_systems', 10)
+        self.publisher_ = self.create_publisher(WarningSystems, '/io/warning_system_out', 10)
         self.timer = self.create_timer(1.0, self.timer_callback)  # 1s
         self.state = False
 

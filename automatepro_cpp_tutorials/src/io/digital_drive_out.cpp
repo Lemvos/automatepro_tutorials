@@ -19,10 +19,10 @@ private:
         auto msg = automatepro_interfaces::msg::DigitalDriveOut();
         msg.d_drive_pin_id = automatepro_interfaces::msg::DigitalDriveOut::HALF_BRIDGE_DRIVE_01;
         msg.direction = automatepro_interfaces::msg::DigitalDriveOut::FORWARD;
-        msg.percent_duty_cycle = duty_cycle_;
+        msg.duty_cycle_percent = duty_cycle_;
         publisher_->publish(msg);
         RCLCPP_INFO(this->get_logger(), "Publishing DigitalDriveOut: d_out_pin_id=%d, direction=%d, duty_cycle_percent=%d",
-                    msg.d_drive_pin_id, msg.direction, msg.percent_duty_cycle);
+                    msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent);
         duty_cycle_ = (duty_cycle_ == 0) ? 100 : 0; // Toggle duty cycle between 0(ON) and 100(OFF)
     }
 

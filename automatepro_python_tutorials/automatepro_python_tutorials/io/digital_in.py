@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import DigitalIn
-from std_srvs.srv import Trigger
+from automatepro_interfaces.srv import ReqDigitalIn
 
 class DigitalInSubscriber(Node):
 
@@ -12,7 +12,7 @@ class DigitalInSubscriber(Node):
             '/io/din',
             self.listener_callback,
             10)
-        self.client = self.create_client(Trigger, '/io/din/request')
+        self.client = self.create_client(ReqDigitalIn, '/io/din/request')
         self.request_state() # Request the current state of the digital inputs
 
     def listener_callback(self, msg):
@@ -23,14 +23,14 @@ class DigitalInSubscriber(Node):
     def request_state(self):
         while not self.client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
-        request = Trigger.Request()
+        request = ReqDigitalIn.Request()
         self.future = self.client.call_async(request)
         self.future.add_done_callback(self.service_callback)
 
     def service_callback(self, future):
         try:
             response = future.result()
-            self.get_logger().info('Service response: %s' % response.message)
+            self.get_logger().info('Service response received: success=%s' % response.success)
         except Exception as e:
             self.get_logger().info('Service call failed %r' % (e,))
 
