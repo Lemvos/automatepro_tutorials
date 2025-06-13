@@ -21,7 +21,7 @@ def main():
     print(f"[Sender] Using interface: {interface}")
 
     try:
-        bus = can.interface.Bus(channel=interface, bustype='socketcan')
+        bus = can.interface.Bus(channel=interface, interface='socketcan')
     except OSError as e:
         print(f"[Sender] Failed to connect to interface {interface}: {e}")
         sys.exit(1)
