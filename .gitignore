@@ -1,1 +1,4 @@
 *.pyc
+# Ignore compiled binaries
+can_sender
+can_receiver
