@@ -2,3 +2,6 @@
 # Ignore compiled binaries
 can_sender
 can_receiver
+rs485_sender
+test
+test.cpp
