@@ -25,7 +25,6 @@ Each mode has:
 ## ⚙️ Prerequisites
 
 ### For C++ programs
-- Linux OS
 - `g++` compiler
 - SocketCAN support (`vcan` or `can0` for testing)
 - Serial port access (`/dev/ttyUSB0`)
@@ -60,20 +59,19 @@ python3 can_receiver.py vcan0
 ./can_sender vcan0
 python3 can_sender.py vcan0
 ```
+
 ## RS485 Serial Examples
 ### Build C++ RS485 Programs
 ```bash
 g++ -o rs485_sender rs485_sender.cpp
 g++ -o rs485_receiver rs485_receiver.cpp
 ```
-
-##  Run RS485 Receivers
+###  Run RS485 Receivers
 ```bash
 ./rs485_receiver
 python3 rs485_receiver.py
 ```
-
-##  Run RS485 Senders
+###  Run RS485 Senders
 ```bash
 ./rs485_sender
 python3 rs485_sender.py
