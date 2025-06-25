@@ -27,7 +27,7 @@ Each mode has:
 ### For C++ programs
 - Linux OS
 - `g++` compiler
-- SocketCAN support (`vcan` for testing)
+- SocketCAN support (`vcan` or `can0` for testing)
 - Serial port access (`/dev/ttyUSB0`)
 
 ### For Python programs
