@@ -13,7 +13,7 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 def main():
-    port = '/dev/ttyUSB0'
+    port = sys.argv[1] if len(sys.argv) > 1 else '/dev/ttyTHS1'
     baudrate = 9600
 
     print(f"[Sender] Opening serial port: {port}")

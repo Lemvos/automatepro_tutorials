@@ -45,10 +45,10 @@ bool configure_serial_port(int fd) {
     return true;
 }
 
-int main() {
+int main(int argc, char** argv) {
     signal(SIGINT, signal_handler);
 
-    const char* device = "/dev/ttyUSB0";
+    const char* device = argc > 1 ? argv[1] : "/dev/ttyTHS1";
     std::cout << "[Receiver] Opening serial port: " << device << std::endl;
 
     int fd = open(device, O_RDWR | O_NOCTTY | O_SYNC);

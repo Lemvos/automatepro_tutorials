@@ -3,7 +3,7 @@
 This folder contains C++ and Python implementations of sender and receiver programs using:
 
 - **CAN Bus** (via `socketcan`)
-- **RS485 Serial Communication** (via `/dev/ttyUSB0`)
+- **RS485 Serial Communication** (via `/dev/ttyTHS1` by default)
 
 Each mode has:
 - A sender and a receiver implementation
@@ -27,7 +27,7 @@ Each mode has:
 ### For C++ programs
 - `g++` compiler
 - SocketCAN support (`vcan` or `can0` for testing)
-- Serial port access (`/dev/ttyUSB0`)
+- Serial port access: membership of the `dialout` group
 
 ### For Python programs
 - Python 3
@@ -62,6 +62,8 @@ python3 can_sender.py vcan0
 ```
 
 ## RS485 Serial Examples
+Each RS485 program opens `/dev/ttyTHS1`, the AutomatePro RS485 port, unless you pass another serial device as its only argument, for example `./rs485_sender /dev/ttyUSB0` for a USB-RS485 adapter on a PC.
+On AutomatePro the 5G modem provides the `/dev/ttyUSB*` ports, so do not pass one of those.
 ### Build C++ RS485 Programs
 ```bash
 g++ -o rs485_sender rs485_sender.cpp
