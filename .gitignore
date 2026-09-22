@@ -3,5 +3,6 @@
 can_sender
 can_receiver
 rs485_sender
-test
-test.cpp
+rs485_receiver
+/misc/test
+/misc/test.cpp
