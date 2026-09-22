@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
             if (nbytes > 0) {
                 std::cout << "[Receiver] Received ID 0x" << std::hex << frame.can_id << " Data: ";
                 for (int i = 0; i < frame.can_dlc; ++i)
-                    std::cout << std::hex << static_cast<int>(frame.data[i]) << " ";
+                    std::cout << std::dec << static_cast<int>(frame.data[i]) << " ";
                 std::cout << std::dec << std::endl;
             } else {
                 perror("[Receiver] Read error");
