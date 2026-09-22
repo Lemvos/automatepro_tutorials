@@ -55,6 +55,9 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
+        # A second Ctrl+C must not cut the off command short; the wait is bounded.
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+        signal.signal(signal.SIGTERM, signal.SIG_IGN)
         node.switch_off()
     finally:
         node.destroy_node()
