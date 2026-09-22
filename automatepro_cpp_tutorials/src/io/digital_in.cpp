@@ -34,6 +34,9 @@ private:
   void request_state()
   {
     while (!client_->wait_for_service(std::chrono::seconds(1))) {
+      if (!rclcpp::ok()) {
+        return;
+      }
       RCLCPP_INFO(this->get_logger(), "service not available, waiting again...");
     }
 
@@ -60,7 +63,10 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<DigitalInSubscriber>());
+  auto node = std::make_shared<DigitalInSubscriber>();
+  if (rclcpp::ok()) {
+    rclcpp::spin(node);
+  }
   rclcpp::shutdown();
   return 0;
 }

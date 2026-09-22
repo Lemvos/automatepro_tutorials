@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.signals import SignalHandlerOptions
 from automatepro_interfaces.msg import DigitalIn
 from automatepro_interfaces.srv import ReqDigitalIn
 
@@ -14,7 +15,6 @@ class DigitalInSubscriber(Node):
             self.listener_callback,
             10)
         self.client = self.create_client(ReqDigitalIn, '/io/din/request')
-        self.request_state()  # Request the current state of the digital inputs
 
     def listener_callback(self, msg):
         self.get_logger().info('Received DigitalIn message: %s' % str([
@@ -37,11 +37,16 @@ class DigitalInSubscriber(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
+    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
     node = DigitalInSubscriber()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        node.request_state()  # Request the current state of the digital inputs
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':
