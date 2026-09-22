@@ -11,7 +11,7 @@ class DigitalDriveOutPublisher(Node):
 
     def __init__(self):
         super().__init__('digital_drive_out_publisher')
-        self.publisher_ = self.create_publisher(DigitalDriveOut, '/io/digital_drive_out', 10)
+        self.publisher = self.create_publisher(DigitalDriveOut, '/io/digital_drive_out', 10)
         self.timer = self.create_timer(1.0, self.timer_callback)  # 1s
         self.duty_cycle = 0
 
@@ -20,7 +20,7 @@ class DigitalDriveOutPublisher(Node):
         msg.d_drive_pin_id = DigitalDriveOut.HALF_BRIDGE_DRIVE_01
         msg.direction = DigitalDriveOut.FORWARD
         msg.duty_cycle_percent = self.duty_cycle
-        self.publisher_.publish(msg)
+        self.publisher.publish(msg)
         self.get_logger().info(
             'Publishing DigitalDriveOut: d_drive_pin_id=%d, direction=%d, '
             'duty_cycle_percent=%d' %
@@ -33,15 +33,15 @@ class DigitalDriveOutPublisher(Node):
         msg.d_drive_pin_id = DigitalDriveOut.HALF_BRIDGE_DRIVE_01
         msg.direction = DigitalDriveOut.FORWARD
         msg.duty_cycle_percent = 0
-        self.publisher_.publish(msg)
+        self.publisher.publish(msg)
         # With no matched subscriber, wait_for_all_acked() succeeds without delivering anything.
-        if self.publisher_.get_subscription_count() == 0:
+        if self.publisher.get_subscription_count() == 0:
             self.get_logger().warn(
                 'HALF_BRIDGE_DRIVE_01 off command not delivered: no subscriber on %s'
-                % self.publisher_.topic_name)
+                % self.publisher.topic_name)
             return
         # Fast DDS acknowledges on the writer heartbeat, sent every 3 s by default.
-        if self.publisher_.wait_for_all_acked(Duration(seconds=4)):
+        if self.publisher.wait_for_all_acked(Duration(seconds=4)):
             self.get_logger().info('Switched HALF_BRIDGE_DRIVE_01 off')
         else:
             self.get_logger().warn('HALF_BRIDGE_DRIVE_01 off command not acknowledged')
