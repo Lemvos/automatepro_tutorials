@@ -3,6 +3,8 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, MagneticField
 
+LOG_PERIOD_S = 1.0
+
 
 class ImuSubscriber(Node):
 
@@ -23,11 +25,13 @@ class ImuSubscriber(Node):
         self.get_logger().info(
             'Received IMU message: orientation=%s, angular_velocity=%s, '
             'linear_acceleration=%s' % (
-                msg.orientation, msg.angular_velocity, msg.linear_acceleration))
+                msg.orientation, msg.angular_velocity, msg.linear_acceleration),
+            throttle_duration_sec=LOG_PERIOD_S)
 
     def magnetic_field_callback(self, msg):
         self.get_logger().info(
-            'Received MagneticField message: magnetic_field=%s' % msg.magnetic_field)
+            'Received MagneticField message: magnetic_field=%s' % msg.magnetic_field,
+            throttle_duration_sec=LOG_PERIOD_S)
 
 
 def main(args=None):

@@ -13,10 +13,12 @@ public:
   }
 
 private:
-  void listener_callback(const automatepro_interfaces::msg::AnalogIn::SharedPtr msg) const
+  static constexpr int kLogPeriodMs = 1000;
+
+  void listener_callback(const automatepro_interfaces::msg::AnalogIn::SharedPtr msg)
   {
-    RCLCPP_INFO(
-      this->get_logger(),
+    RCLCPP_INFO_THROTTLE(
+      this->get_logger(), *this->get_clock(), kLogPeriodMs,
       "Received AnalogIn message:\n"
       "AIN_01: %d\nAIN_02: %d\nAIN_03: %d\n"
       "AIN_04: %d\nAIN_05: %d\nAIN_06: %d\n"

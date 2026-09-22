@@ -17,20 +17,23 @@ public:
   }
 
 private:
-  void imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) const
+  static constexpr int kLogPeriodMs = 1000;
+
+  void imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg)
   {
-    RCLCPP_INFO(
+    RCLCPP_INFO_THROTTLE(
       this->get_logger(),
+      *this->get_clock(), kLogPeriodMs,
       "Received IMU message: orientation=[x: %f, y: %f, z: %f, w: %f], angular_velocity=[x: %f, y: %f, z: %f], linear_acceleration=[x: %f, y: %f, z: %f]",
       msg->orientation.x, msg->orientation.y, msg->orientation.z, msg->orientation.w,
       msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z,
       msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z);
   }
 
-  void magnetic_field_callback(const sensor_msgs::msg::MagneticField::SharedPtr msg) const
+  void magnetic_field_callback(const sensor_msgs::msg::MagneticField::SharedPtr msg)
   {
-    RCLCPP_INFO(
-      this->get_logger(),
+    RCLCPP_INFO_THROTTLE(
+      this->get_logger(), *this->get_clock(), kLogPeriodMs,
       "Received MagneticField message: magnetic_field=[x: %f, y: %f, z: %f]",
       msg->magnetic_field.x, msg->magnetic_field.y, msg->magnetic_field.z);
   }
