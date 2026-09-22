@@ -1,6 +1,6 @@
 # CAN and RS485 Communication Examples
 
-This repository contains C++ and Python implementations of sender and receiver programs using:
+This folder contains C++ and Python implementations of sender and receiver programs using:
 
 - **CAN Bus** (via `socketcan`)
 - **RS485 Serial Communication** (via `/dev/ttyUSB0`)
@@ -44,6 +44,7 @@ sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
 ```
+On AutomatePro, `automatepro-start-can0.service` brings `can0` up at 500 kbit/s; pass `can0` instead of `vcan0` to use the CAN bus.
 ### Build C++ CAN Programs
 ```bash
 g++ -o can_sender can_sender.cpp
