@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import WarningSystems
 
+
 class WarningSystemsPublisher(Node):
 
     def __init__(self):
@@ -18,7 +19,8 @@ class WarningSystemsPublisher(Node):
         self.get_logger().info(
             'Publishing WarningSystems: warning_system_id=%d, state=%d' %
             (msg.warning_system_id, msg.state))
-        self.state = not self.state # Toggle state
+        self.state = not self.state  # Toggle state
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -26,6 +28,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

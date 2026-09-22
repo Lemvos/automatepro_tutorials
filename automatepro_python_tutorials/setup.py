@@ -31,13 +31,14 @@ setup(
 
             # IO Nodes
             'analog_in_node = automatepro_python_tutorials.io.analog_in:main',
-            'digital_in_node = automatepro_python_tutorials.io.digital_in:main',    
+            'digital_in_node = automatepro_python_tutorials.io.digital_in:main',
             'digital_out_node = automatepro_python_tutorials.io.digital_out:main',
             'digital_drive_out_node = automatepro_python_tutorials.io.digital_drive_out:main',
             'warning_system_out_node = automatepro_python_tutorials.io.warning_system_out:main',
 
             # Diagnostic Nodes
-            'io_controller_diagnostic_node = automatepro_python_tutorials.diagnostics.io_controller:main',
+            'io_controller_diagnostic_node = '
+            'automatepro_python_tutorials.diagnostics.io_controller:main',
         ],
     },
 )

@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import IOControllerDiagnostic
 
+
 class IOControllerDiagnosticSubscriber(Node):
 
     def __init__(self):
@@ -35,12 +36,14 @@ class IOControllerDiagnosticSubscriber(Node):
         self.get_logger().info(f'Motor Drive Fault 4: {msg.digital_drive_fault_4}')
         self.get_logger().info(f'Board Temperature: {msg.board_temp} °C')
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = IOControllerDiagnosticSubscriber()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

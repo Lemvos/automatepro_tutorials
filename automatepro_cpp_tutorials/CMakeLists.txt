@@ -44,7 +44,7 @@ add_executable(gnss_position_node src/sensors/gnss_position.cpp)
 ament_target_dependencies(gnss_position_node rclcpp  std_msgs sensor_msgs geometry_msgs ublox_msgs automatepro_interfaces)
 
 add_executable(imu_node src/sensors/imu.cpp)
-ament_target_dependencies(imu_node rclcpp std_msgs sensor_msgs geometry_msgs )
+ament_target_dependencies(imu_node rclcpp std_msgs sensor_msgs geometry_msgs)
 
 install(TARGETS
   io_controller_diagnostic_node

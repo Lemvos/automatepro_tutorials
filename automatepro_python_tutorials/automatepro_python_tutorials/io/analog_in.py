@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import AnalogIn
 
+
 class AnalogInSubscriber(Node):
 
     def __init__(self):
@@ -22,12 +23,14 @@ class AnalogInSubscriber(Node):
             f'AIN_13: {msg.ain_13}\nAIN_14: {msg.ain_14}'
         )
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = AnalogInSubscriber()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

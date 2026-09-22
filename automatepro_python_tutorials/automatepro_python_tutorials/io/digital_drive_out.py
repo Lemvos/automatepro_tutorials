@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import DigitalDriveOut
 
+
 class DigitalDriveOutPublisher(Node):
 
     def __init__(self):
@@ -19,7 +20,9 @@ class DigitalDriveOutPublisher(Node):
         self.get_logger().info(
             'Publishing DigitalDriveOut: d_out_pin_id=%d, direction=%d, duty_cycle_percent=%d' %
             (msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent))
-        self.duty_cycle = 100 if self.duty_cycle == 0 else 0 # Toggle duty cycle between 0(ON) and 100(OFF)
+        # Toggle duty cycle between 0(ON) and 100(OFF)
+        self.duty_cycle = 100 if self.duty_cycle == 0 else 0
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -27,6 +30,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

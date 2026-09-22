@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, MagneticField
 
+
 class ImuSubscriber(Node):
 
     def __init__(self):
@@ -18,11 +19,15 @@ class ImuSubscriber(Node):
             10)
 
     def imu_callback(self, msg):
-        self.get_logger().info('Received IMU message: orientation=%s, angular_velocity=%s, linear_acceleration=%s' % (
-          msg.orientation, msg.angular_velocity, msg.linear_acceleration))
+        self.get_logger().info(
+            'Received IMU message: orientation=%s, angular_velocity=%s, '
+            'linear_acceleration=%s' % (
+                msg.orientation, msg.angular_velocity, msg.linear_acceleration))
 
     def magnetic_field_callback(self, msg):
-        self.get_logger().info('Received MagneticField message: magnetic_field=%s' % msg.magnetic_field)
+        self.get_logger().info(
+            'Received MagneticField message: magnetic_field=%s' % msg.magnetic_field)
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -30,6 +35,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

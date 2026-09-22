@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from automatepro_interfaces.msg import DigitalOut
 
+
 class DigitalOutPublisher(Node):
 
     def __init__(self):
@@ -13,12 +14,14 @@ class DigitalOutPublisher(Node):
 
     def timer_callback(self):
         msg = DigitalOut()
-        msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_H_01 # Digital Out Pin 01
-        msg.duty_cycle_percent = self.duty_cycle_sequence[self.sequence_index] # Duty Cycle:  0%, 50%, 100%, 50%
-                                                                               # 0% - OFF, 100% - ON 
+        msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_H_01  # Digital Out Pin 01
+        # Duty Cycle: 0%, 50%, 100%, 50%
+        # 0% - OFF, 100% - ON
+        msg.duty_cycle_percent = self.duty_cycle_sequence[self.sequence_index]
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg)
         self.sequence_index = (self.sequence_index + 1) % len(self.duty_cycle_sequence)
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -26,6 +29,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

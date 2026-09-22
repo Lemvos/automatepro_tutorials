@@ -3,6 +3,7 @@ from rclpy.node import Node
 from automatepro_interfaces.msg import DigitalIn
 from automatepro_interfaces.srv import ReqDigitalIn
 
+
 class DigitalInSubscriber(Node):
 
     def __init__(self):
@@ -13,12 +14,12 @@ class DigitalInSubscriber(Node):
             self.listener_callback,
             10)
         self.client = self.create_client(ReqDigitalIn, '/io/din/request')
-        self.request_state() # Request the current state of the digital inputs
+        self.request_state()  # Request the current state of the digital inputs
 
     def listener_callback(self, msg):
-        self.get_logger().info('Received DigitalIn message: %s' % [
+        self.get_logger().info('Received DigitalIn message: %s' % str([
             msg.din_01, msg.din_02, msg.din_03, msg.din_04, msg.din_05,
-            msg.din_06, msg.din_07, msg.din_08, msg.din_09, msg.din_10])
+            msg.din_06, msg.din_07, msg.din_08, msg.din_09, msg.din_10]))
 
     def request_state(self):
         while not self.client.wait_for_service(timeout_sec=1.0):
@@ -34,12 +35,14 @@ class DigitalInSubscriber(Node):
         except Exception as e:
             self.get_logger().info('Service call failed %r' % (e,))
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = DigitalInSubscriber()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
