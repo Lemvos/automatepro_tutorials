@@ -7,11 +7,10 @@
 #include <unistd.h>
 #include <termios.h>
 
-bool running = true;
+volatile std::sig_atomic_t running = 1;
 
 void signal_handler(int) {
-    running = false;
-    std::cout << "\n[Receiver] Stopping...\n";
+    running = 0;
 }
 
 // Configure serial port settings
@@ -46,10 +45,10 @@ bool configure_serial_port(int fd) {
     return true;
 }
 
-int main() {
+int main(int argc, char** argv) {
     signal(SIGINT, signal_handler);
 
-    const char* device = "/dev/ttyUSB0";
+    const char* device = argc > 1 ? argv[1] : "/dev/ttyTHS1";
     std::cout << "[Receiver] Opening serial port: " << device << std::endl;
 
     int fd = open(device, O_RDWR | O_NOCTTY | O_SYNC);
@@ -81,6 +80,7 @@ int main() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    std::cout << "\n[Receiver] Stopping...\n";
     close(fd);
     std::cout << "[Receiver] Closed.\n";
     return 0;

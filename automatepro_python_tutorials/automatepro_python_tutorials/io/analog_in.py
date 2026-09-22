@@ -1,6 +1,24 @@
+# Copyright 2024 Lemvos Robotics GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from automatepro_interfaces.msg import AnalogIn
+
+LOG_PERIOD_S = 1.0
+
 
 class AnalogInSubscriber(Node):
 
@@ -19,15 +37,21 @@ class AnalogInSubscriber(Node):
             f'AIN_04: {msg.ain_04}\nAIN_05: {msg.ain_05}\nAIN_06: {msg.ain_06}\n'
             f'AIN_07: {msg.ain_07}\nAIN_08: {msg.ain_08}\nAIN_09: {msg.ain_09}\n'
             f'AIN_10: {msg.ain_10}\nAIN_11: {msg.ain_11}\nAIN_12: {msg.ain_12}\n'
-            f'AIN_13: {msg.ain_13}\nAIN_14: {msg.ain_14}'
-        )
+            f'AIN_13: {msg.ain_13}\nAIN_14: {msg.ain_14}',
+            throttle_duration_sec=LOG_PERIOD_S)
+
 
 def main(args=None):
     rclpy.init(args=args)
     node = AnalogInSubscriber()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.try_shutdown()
+
 
 if __name__ == '__main__':
     main()

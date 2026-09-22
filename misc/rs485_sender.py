@@ -5,15 +5,18 @@ import sys
 
 running = True
 
+
 def signal_handler(sig, frame):
     global running
     print("\n[Sender] Stopping...")
     running = False
 
+
 signal.signal(signal.SIGINT, signal_handler)
 
+
 def main():
-    port = '/dev/ttyUSB0'
+    port = sys.argv[1] if len(sys.argv) > 1 else '/dev/ttyTHS1'
     baudrate = 9600
 
     print(f"[Sender] Opening serial port: {port}")
@@ -37,6 +40,7 @@ def main():
 
     ser.close()
     print("[Sender] Closed.")
+
 
 if __name__ == "__main__":
     main()

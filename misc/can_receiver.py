@@ -4,12 +4,15 @@ import signal
 
 running = True
 
+
 def signal_handler(sig, frame):
     global running
     running = False
     print("\n[Receiver] Stopping...")
 
+
 signal.signal(signal.SIGINT, signal_handler)
+
 
 def main():
     if len(sys.argv) < 2:
@@ -29,12 +32,14 @@ def main():
         try:
             msg = bus.recv(timeout=1.0)
             if msg:
-                print(f"[Receiver] Received ID 0x{msg.arbitration_id:X} Data: {' '.join(str(b) for b in msg.data)}")
+                print(f"[Receiver] Received ID 0x{msg.arbitration_id:X} "
+                      f"Data: {' '.join(str(b) for b in msg.data)}")
         except can.CanError as e:
             print(f"[Receiver] Receive failed: {e}")
 
     bus.shutdown()
     print("[Receiver] Closed.")
+
 
 if __name__ == "__main__":
     main()
