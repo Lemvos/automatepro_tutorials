@@ -25,7 +25,7 @@ Both packages provide the same executables.
 
 | Executable | Topic | Behavior |
 |---|---|---|
-| `imu_node` | `/sensor/imu/data`, `/sensor/imu/magnetic_field` | Prints IMU and magnetic field data, at most once per second |
+| `imu_node` | `/sensor/imu/data`, `/sensor/imu/magnetic_field` | Prints IMU and magnetic field data, at most once per second; the magnetic field is published only when the IMU driver's `publish.magnetic_field.enabled` is `true`, which the AutomatePro default configuration turns off |
 | `gnss_position_node` | `/sensor/gnss/position/fix` | Prints latitude, longitude, and altitude |
 | `gnss_heading_node` | `/sensor/gnss/heading/true_heading` | Prints the heading, clockwise from north, and its accuracy |
 | `analog_in_node` | `/io/ain` | Prints the 14 analog inputs, at most once per second |
