@@ -7,11 +7,10 @@
 #include <unistd.h>
 #include <termios.h>
 
-bool running = true;
+volatile std::sig_atomic_t running = 1;
 
 void signal_handler(int) {
-    running = false;
-    std::cout << "\n[Receiver] Stopping...\n";
+    running = 0;
 }
 
 // Configure serial port settings
@@ -81,6 +80,7 @@ int main() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    std::cout << "\n[Receiver] Stopping...\n";
     close(fd);
     std::cout << "[Receiver] Closed.\n";
     return 0;

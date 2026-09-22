@@ -11,10 +11,10 @@
 #include <linux/can/raw.h>
 #include <unistd.h>
 
-bool running = true;
+volatile std::sig_atomic_t running = 1;
 
 void signal_handler(int) {
-    running = false;
+    running = 0;
 }
 
 int main(int argc, char** argv) {
