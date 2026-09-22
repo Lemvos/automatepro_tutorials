@@ -1,4 +1,5 @@
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.signals import SignalHandlerOptions
 from automatepro_interfaces.msg import DigitalIn
@@ -37,12 +38,15 @@ class DigitalInSubscriber(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+    # SIGINT only: the rclpy handler wakes spin() while /io/din is idle and raises
+    # KeyboardInterrupt out of the service wait. SIGTERM keeps its default action,
+    # because a context shut down during wait_for_service() raises RCLError.
+    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.SIGINT)
     node = DigitalInSubscriber()
     try:
         node.request_state()  # Request the current state of the digital inputs
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
         node.destroy_node()
