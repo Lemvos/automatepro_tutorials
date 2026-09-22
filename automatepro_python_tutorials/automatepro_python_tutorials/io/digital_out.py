@@ -1,6 +1,9 @@
+import signal
+
 import rclpy
-from rclpy.executors import ExternalShutdownException
+from rclpy.duration import Duration
 from rclpy.node import Node
+from rclpy.signals import SignalHandlerOptions
 from automatepro_interfaces.msg import DigitalOut
 
 
@@ -23,14 +26,27 @@ class DigitalOutPublisher(Node):
         self.get_logger().info('Publishing: "%s"' % msg)
         self.sequence_index = (self.sequence_index + 1) % len(self.duty_cycle_sequence)
 
+    def switch_off(self):
+        msg = DigitalOut()
+        msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_H_01
+        msg.duty_cycle_percent = 0
+        self.publisher_.publish(msg)
+        # Fast DDS acknowledges on the writer heartbeat, sent every 3 s by default.
+        if self.publisher_.wait_for_all_acked(Duration(seconds=4)):
+            self.get_logger().info('Switched DIGITAL_OUT_H_01 off')
+        else:
+            self.get_logger().warn('DIGITAL_OUT_H_01 off command not acknowledged')
+
 
 def main(args=None):
-    rclpy.init(args=args)
+    # The IO controller keeps the last command, so switch the output off before exiting.
+    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+    signal.signal(signal.SIGTERM, signal.default_int_handler)
     node = DigitalOutPublisher()
     try:
         rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
+    except KeyboardInterrupt:
+        node.switch_off()
     finally:
         node.destroy_node()
         rclpy.try_shutdown()

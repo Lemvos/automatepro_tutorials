@@ -1,6 +1,9 @@
+import signal
+
 import rclpy
-from rclpy.executors import ExternalShutdownException
+from rclpy.duration import Duration
 from rclpy.node import Node
+from rclpy.signals import SignalHandlerOptions
 from automatepro_interfaces.msg import WarningSystems
 
 
@@ -22,14 +25,27 @@ class WarningSystemsPublisher(Node):
             (msg.warning_system_id, msg.state))
         self.state = not self.state  # Toggle state
 
+    def switch_off(self):
+        msg = WarningSystems()
+        msg.warning_system_id = WarningSystems.WARNING_BUZZER
+        msg.state = WarningSystems.OFF
+        self.publisher_.publish(msg)
+        # Fast DDS acknowledges on the writer heartbeat, sent every 3 s by default.
+        if self.publisher_.wait_for_all_acked(Duration(seconds=4)):
+            self.get_logger().info('Switched WARNING_BUZZER off')
+        else:
+            self.get_logger().warn('WARNING_BUZZER off command not acknowledged')
+
 
 def main(args=None):
-    rclpy.init(args=args)
+    # The IO controller keeps the last command, so switch the buzzer off before exiting.
+    rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+    signal.signal(signal.SIGTERM, signal.default_int_handler)
     node = WarningSystemsPublisher()
     try:
         rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
+    except KeyboardInterrupt:
+        node.switch_off()
     finally:
         node.destroy_node()
         rclpy.try_shutdown()
