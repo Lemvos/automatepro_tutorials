@@ -27,7 +27,7 @@ setup(
             # Sensor Nodes
             'gnss_position_node = automatepro_python_tutorials.sensors.gnss_position:main',
             'gnss_heading_node = automatepro_python_tutorials.sensors.gnss_heading:main',
-            'imu_node = automatepro_python_tutorials.sensor.imu:main',
+            'imu_node = automatepro_python_tutorials.sensors.imu:main',
 
             # IO Nodes
             'analog_in_node = automatepro_python_tutorials.io.analog_in:main',
