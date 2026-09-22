@@ -47,7 +47,7 @@ Both packages provide the same executables.
 - `automatepro-io-agent.service` running for the IO examples, and `automatepro-core-driver.service` running for the sensor examples.
 - `colcon` and `rosdep`: `sudo apt install python3-colcon-common-extensions python3-rosdep`.
   If rosdep was never initialized on the unit, run `sudo rosdep init` and `rosdep update` once.
-- A terminal whose `ROS_DOMAIN_ID` matches the AutomatePro services; see [Change the ROS Domain ID](https://docs.lemvos.com/automatepro/manual/misc/software-services#change-the-ros-domain-id).
+- A terminal whose `ROS_DOMAIN_ID` matches the AutomatePro services, which read it from `/opt/automatepro/.env`; see [Installation Prompts](https://docs.lemvos.com/automatepro/manual/misc/software-services#installation-prompts).
 
 ## Build
 
