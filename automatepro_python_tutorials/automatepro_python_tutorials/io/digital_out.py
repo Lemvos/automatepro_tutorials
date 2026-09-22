@@ -31,6 +31,12 @@ class DigitalOutPublisher(Node):
         msg.d_out_pin_id = DigitalOut.DIGITAL_OUT_H_01
         msg.duty_cycle_percent = 0
         self.publisher_.publish(msg)
+        # With no matched subscriber, wait_for_all_acked() succeeds without delivering anything.
+        if self.publisher_.get_subscription_count() == 0:
+            self.get_logger().warn(
+                'DIGITAL_OUT_H_01 off command not delivered: no subscriber on %s'
+                % self.publisher_.topic_name)
+            return
         # Fast DDS acknowledges on the writer heartbeat, sent every 3 s by default.
         if self.publisher_.wait_for_all_acked(Duration(seconds=4)):
             self.get_logger().info('Switched DIGITAL_OUT_H_01 off')

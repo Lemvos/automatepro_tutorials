@@ -31,6 +31,13 @@ public:
     msg.d_out_pin_id = automatepro_interfaces::msg::DigitalOut::DIGITAL_OUT_H_01;
     msg.duty_cycle_percent = 0;
     publisher_->publish(msg);
+    // With no matched subscriber, wait_for_all_acked() succeeds without delivering anything.
+    if (publisher_->get_subscription_count() == 0) {
+      RCLCPP_WARN(
+        this->get_logger(), "DIGITAL_OUT_H_01 off command not delivered: no subscriber on %s",
+        publisher_->get_topic_name());
+      return;
+    }
     // Fast DDS acknowledges on the writer heartbeat, sent every 3 s by default.
     if (publisher_->wait_for_all_acked(std::chrono::seconds(4))) {
       RCLCPP_INFO(this->get_logger(), "Switched DIGITAL_OUT_H_01 off");
