@@ -18,11 +18,11 @@ private:
     RCLCPP_INFO(
       this->get_logger(),
       "Received AnalogIn message:\n"
-      "AIN_01: %u\nAIN_02: %u\nAIN_03: %u\n"
-      "AIN_04: %u\nAIN_05: %u\nAIN_06: %u\n"
-      "AIN_07: %u\nAIN_08: %u\nAIN_09: %u\n"
-      "AIN_10: %u\nAIN_11: %u\nAIN_12: %u\n"
-      "AIN_13: %u\nAIN_14: %u",
+      "AIN_01: %d\nAIN_02: %d\nAIN_03: %d\n"
+      "AIN_04: %d\nAIN_05: %d\nAIN_06: %d\n"
+      "AIN_07: %d\nAIN_08: %d\nAIN_09: %d\n"
+      "AIN_10: %d\nAIN_11: %d\nAIN_12: %d\n"
+      "AIN_13: %d\nAIN_14: %d",
       msg->ain_01, msg->ain_02, msg->ain_03,
       msg->ain_04, msg->ain_05, msg->ain_06,
       msg->ain_07, msg->ain_08, msg->ain_09,
