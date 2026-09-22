@@ -34,7 +34,7 @@ private:
   {
     RCLCPP_INFO_THROTTLE(
       this->get_logger(), *this->get_clock(), kLogPeriodMs,
-      "Received MagneticField message: magnetic_field=[x: %f, y: %f, z: %f]",
+      "Received MagneticField message: magnetic_field=[x: %.3e, y: %.3e, z: %.3e]",
       msg->magnetic_field.x, msg->magnetic_field.y, msg->magnetic_field.z);
   }
 
