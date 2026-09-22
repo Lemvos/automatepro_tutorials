@@ -46,7 +46,7 @@ bool configure_serial_port(int fd) {
     return true;
 }
 
-int main(int argc, char** argv) {
+int main() {
     signal(SIGINT, signal_handler);
 
     const char* device = "/dev/ttyUSB0";
