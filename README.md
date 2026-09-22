@@ -1,25 +1,72 @@
 # AutomatePro Tutorials
 
+[![ROS 2 Humble](https://img.shields.io/badge/ROS2-Humble-blue.svg)](https://docs.ros.org/en/humble/)
+
 ROS 2 Humble examples in Python and C++ for the AutomatePro sensors and IO controller.
 The [AutomatePro documentation](https://docs.lemvos.com/automatepro/system-overview) describes the topics and messages they use.
 
-## Contents
+## Table of Contents
 
-- [Packages](#packages)
-- [Examples](#examples)
-- [Requirements](#requirements)
-- [Build](#build)
-- [Run](#run)
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Examples](#examples)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-## Packages
+## Overview
+
+The repository holds two ROS 2 packages that provide the same nine examples, and a folder of CAN and RS485 examples that run outside ROS.
 
 | Folder | Contents |
 |---|---|
-| `automatepro_python_tutorials` | Python package with the examples below |
+| `automatepro_python_tutorials` | Python package with the examples listed under [Examples](#examples) |
 | `automatepro_cpp_tutorials` | C++ package with the same examples |
-| `misc` | CAN and RS485 examples outside ROS; see [misc/README.md](./misc/README.md) |
+| `misc` | CAN and RS485 examples outside ROS; see [misc/README.md](misc/README.md) |
 
-## Examples
+Six examples print sensor, input, or diagnostic data, and three switch an IO controller output.
+
+## Prerequisites
+
+- An AutomatePro unit with the AutomatePro software installed, which provides ROS 2 Humble packages including `automatepro_interfaces`.
+- `automatepro-io-agent.service` running for the IO examples, and `automatepro-core-driver.service` running for the sensor examples.
+- `colcon` and `rosdep`: `sudo apt install python3-colcon-common-extensions python3-rosdep`.
+  If rosdep was never initialized on the unit, run `sudo rosdep init` and `rosdep update` once.
+- A terminal whose `ROS_DOMAIN_ID` matches the AutomatePro services, which read it from `/opt/automatepro/.env`; see [Installation Prompts](https://docs.lemvos.com/automatepro/manual/misc/software-services#installation-prompts).
+
+## Installation
+
+```bash
+mkdir -p ~/tutorials_ws/src
+cd ~/tutorials_ws/src
+git clone https://github.com/Lemvos/automatepro_tutorials.git
+cd ~/tutorials_ws
+source /opt/ros/humble/setup.bash
+rosdep install --from-paths src --ignore-src -y
+colcon build --symlink-install
+```
+
+## Usage
+
+In each new terminal, source the workspace first:
+
+```bash
+source ~/tutorials_ws/install/setup.bash
+```
+
+Then run an example from either package, for example:
+
+```bash
+ros2 run automatepro_python_tutorials imu_node
+ros2 run automatepro_cpp_tutorials imu_node
+```
+
+Stop an example with Ctrl+C.
+
+### Examples
 
 Both packages provide the same executables.
 
@@ -41,39 +88,90 @@ Both packages provide the same executables.
 > The IO controller keeps the last command it receives, so stop these nodes with Ctrl+C: they switch their output off before they exit, which can take up to 5 seconds.
 > A node that is killed with `kill -9` or crashes leaves its output in the last state.
 
-## Requirements
+## Project Structure
 
-- An AutomatePro unit with the AutomatePro software installed, which provides ROS 2 Humble packages including `automatepro_interfaces`.
-- `automatepro-io-agent.service` running for the IO examples, and `automatepro-core-driver.service` running for the sensor examples.
-- `colcon` and `rosdep`: `sudo apt install python3-colcon-common-extensions python3-rosdep`.
-  If rosdep was never initialized on the unit, run `sudo rosdep init` and `rosdep update` once.
-- A terminal whose `ROS_DOMAIN_ID` matches the AutomatePro services, which read it from `/opt/automatepro/.env`; see [Installation Prompts](https://docs.lemvos.com/automatepro/manual/misc/software-services#installation-prompts).
+```text
+automatepro_tutorials/
+├── automatepro_cpp_tutorials/
+│   ├── src/
+│   │   ├── diagnostics/
+│   │   │   └── io_controller.cpp
+│   │   ├── io/
+│   │   │   ├── analog_in.cpp
+│   │   │   ├── digital_drive_out.cpp
+│   │   │   ├── digital_in.cpp
+│   │   │   ├── digital_out.cpp
+│   │   │   └── warning_system_out.cpp
+│   │   └── sensors/
+│   │       ├── gnss_heading.cpp
+│   │       ├── gnss_position.cpp
+│   │       └── imu.cpp
+│   ├── CMakeLists.txt
+│   ├── LICENSE
+│   └── package.xml
+├── automatepro_python_tutorials/
+│   ├── automatepro_python_tutorials/
+│   │   ├── diagnostics/
+│   │   │   └── io_controller.py
+│   │   ├── io/
+│   │   │   ├── analog_in.py
+│   │   │   ├── digital_drive_out.py
+│   │   │   ├── digital_in.py
+│   │   │   ├── digital_out.py
+│   │   │   └── warning_system_out.py
+│   │   └── sensors/
+│   │       ├── gnss_heading.py
+│   │       ├── gnss_position.py
+│   │       └── imu.py
+│   ├── resource/
+│   ├── test/
+│   ├── LICENSE
+│   ├── package.xml
+│   ├── setup.cfg
+│   └── setup.py
+├── misc/
+└── README.md
+```
 
-## Build
+## Testing
+
+The tests are the ament linters: cppcheck, cpplint, uncrustify, lint_cmake, xmllint, and copyright for the C++ package, and flake8, pep257, and copyright for the Python package.
 
 ```bash
-mkdir -p ~/tutorials_ws/src
-cd ~/tutorials_ws/src
-git clone https://github.com/Lemvos/automatepro_tutorials.git
 cd ~/tutorials_ws
-source /opt/ros/humble/setup.bash
-rosdep install --from-paths src --ignore-src -y
-colcon build --symlink-install
+colcon test --return-code-on-test-failure
+colcon test-result --verbose
 ```
 
-## Run
+## Troubleshooting
 
-In each new terminal, source the workspace first:
+### An example prints nothing
+
+Check that the terminal and the AutomatePro services use the same ROS domain, and that the service behind the example is running:
 
 ```bash
-source ~/tutorials_ws/install/setup.bash
+grep ROS_DOMAIN_ID /opt/automatepro/.env
+echo $ROS_DOMAIN_ID
+systemctl status automatepro-io-agent.service automatepro-core-driver.service
+ros2 topic list
 ```
 
-Then run an example from either package, for example:
+`gnss_position_node` prints only when a GNSS position receiver is connected, and `imu_node` prints magnetic field data only when the IMU driver publishes it.
+
+### An output example logs "off command not delivered"
+
+The node found no subscriber on its command topic when it stopped, so the IO controller did not receive the off command and the output state is unknown.
+Fix the `ROS_DOMAIN_ID` or start `automatepro-io-agent.service`, then run the example again and stop it with Ctrl+C.
+
+### `digital_in_node` prints only once
+
+The IO controller publishes `/io/din` only when an input changes.
+Request the current state again from another terminal:
 
 ```bash
-ros2 run automatepro_python_tutorials imu_node
-ros2 run automatepro_cpp_tutorials imu_node
+ros2 service call /io/din/request automatepro_interfaces/srv/ReqDigitalIn
 ```
 
-Stop an example with Ctrl+C.
+## License
+
+Both packages are licensed under the Apache License 2.0; see [automatepro_cpp_tutorials/LICENSE](automatepro_cpp_tutorials/LICENSE) and [automatepro_python_tutorials/LICENSE](automatepro_python_tutorials/LICENSE).
