@@ -38,7 +38,7 @@ Both packages provide the same executables.
 > [!WARNING]
 > `digital_out_node`, `digital_drive_out_node`, and `warning_system_out_node` switch real outputs.
 > Disconnect or secure any load on `DIGITAL_OUT_H_01` or `HALF_BRIDGE_DRIVE_01` before you run them.
-> The IO controller keeps the last command it receives, so stop these nodes with Ctrl+C: they switch their output off before they exit, which can take up to 4 seconds.
+> The IO controller keeps the last command it receives, so stop these nodes with Ctrl+C: they switch their output off before they exit, which can take up to 5 seconds.
 > A node that is killed with `kill -9` or crashes leaves its output in the last state.
 
 ## Requirements
