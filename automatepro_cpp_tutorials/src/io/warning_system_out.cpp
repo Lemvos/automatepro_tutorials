@@ -43,7 +43,7 @@ private:
       return;
     }
     auto msg = automatepro_interfaces::msg::WarningSystems();
-    msg.warning_system_id = automatepro_interfaces::msg::WarningSystems::WARNING_BUZZER;      // Change to WARNING_LIGHT1 or WARNING_LIGHT2 as needed
+    msg.warning_system_id = automatepro_interfaces::msg::WarningSystems::WARNING_BUZZER;      // Change to WARNING_LIGHT_01 or WARNING_LIGHT_02 as needed
     msg.state = state_;
     publisher_->publish(msg);
     RCLCPP_INFO(

@@ -24,7 +24,7 @@ class DigitalDriveOutPublisher(Node):
         self.get_logger().info(
             'Publishing DigitalDriveOut: d_out_pin_id=%d, direction=%d, duty_cycle_percent=%d' %
             (msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent))
-        # Toggle duty cycle between 0(ON) and 100(OFF)
+        # Toggle duty cycle between 0 (OFF) and 100 (ON)
         self.duty_cycle = 100 if self.duty_cycle == 0 else 0
 
     def switch_off(self):

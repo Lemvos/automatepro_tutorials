@@ -51,7 +51,7 @@ private:
     RCLCPP_INFO(
       this->get_logger(), "Publishing DigitalDriveOut: d_out_pin_id=%d, direction=%d, duty_cycle_percent=%d",
       msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent);
-    duty_cycle_ = (duty_cycle_ == 0) ? 100 : 0;     // Toggle duty cycle between 0(ON) and 100(OFF)
+    duty_cycle_ = (duty_cycle_ == 0) ? 100 : 0;     // Toggle duty cycle between 0 (OFF) and 100 (ON)
   }
 
   rclcpp::Publisher<automatepro_interfaces::msg::DigitalDriveOut>::SharedPtr publisher_;
