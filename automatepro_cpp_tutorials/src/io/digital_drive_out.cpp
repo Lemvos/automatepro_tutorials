@@ -1,3 +1,17 @@
+// Copyright 2024 Lemvos Robotics GmbH
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <chrono>
 #include <memory>
 #include <mutex>
@@ -56,9 +70,11 @@ private:
     msg.duty_cycle_percent = duty_cycle_;
     publisher_->publish(msg);
     RCLCPP_INFO(
-      this->get_logger(), "Publishing DigitalDriveOut: d_drive_pin_id=%d, direction=%d, duty_cycle_percent=%d",
+      this->get_logger(),
+      "Publishing DigitalDriveOut: d_drive_pin_id=%d, direction=%d, duty_cycle_percent=%d",
       msg.d_drive_pin_id, msg.direction, msg.duty_cycle_percent);
-    duty_cycle_ = (duty_cycle_ == 0) ? 100 : 0;     // Toggle duty cycle between 0 (OFF) and 100 (ON)
+    // Toggle duty cycle between 0 (OFF) and 100 (ON)
+    duty_cycle_ = (duty_cycle_ == 0) ? 100 : 0;
   }
 
   rclcpp::Publisher<automatepro_interfaces::msg::DigitalDriveOut>::SharedPtr publisher_;

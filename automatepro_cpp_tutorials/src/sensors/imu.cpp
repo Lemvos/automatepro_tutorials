@@ -1,3 +1,17 @@
+// Copyright 2024 Lemvos Robotics GmbH
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/magnetic_field.hpp>
@@ -24,7 +38,8 @@ private:
     RCLCPP_INFO_THROTTLE(
       this->get_logger(),
       *this->get_clock(), kLogPeriodMs,
-      "Received IMU message: orientation=[x: %f, y: %f, z: %f, w: %f], angular_velocity=[x: %f, y: %f, z: %f], linear_acceleration=[x: %f, y: %f, z: %f]",
+      "Received IMU message: orientation=[x: %f, y: %f, z: %f, w: %f], "
+      "angular_velocity=[x: %f, y: %f, z: %f], linear_acceleration=[x: %f, y: %f, z: %f]",
       msg->orientation.x, msg->orientation.y, msg->orientation.z, msg->orientation.w,
       msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z,
       msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z);
