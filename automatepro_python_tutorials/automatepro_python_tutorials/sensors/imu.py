@@ -1,4 +1,5 @@
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import Imu, MagneticField
 
@@ -32,9 +33,13 @@ class ImuSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = ImuSubscriber()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':
